@@ -31,8 +31,7 @@ public class BoardExe {
 		for (int i = 0; i < storage.length - 1; i++) {
 			for (int j = 0; j < storage.length - 1; j++) {
 				Board temp;
-				if (storage[j] == null || storage[j + 1] == null || 
-					storage[j].getBoardNo() <= storage[j + 1].getBoardNo()) {
+				if (storage[j] == null || storage[j + 1] == null || storage[j].getBoardNo() <= storage[j + 1].getBoardNo()) {
 					continue;
 				}
 				// 위치변경 [i] <--> [i+1]
