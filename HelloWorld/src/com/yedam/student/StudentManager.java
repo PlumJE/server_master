@@ -45,8 +45,6 @@ public class StudentManager {
 					if (students[i] != null) {
 						System.out.printf("%3d %20s %3d %3d\n", students[i].studentNum, 
 								students[i].studentName, students[i].englishScore, students[i].mathScore);
-						students[i].smile();
-						students[i].introduce();
 					}
 				}
 				break;

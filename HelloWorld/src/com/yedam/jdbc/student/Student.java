@@ -11,9 +11,6 @@ public class Student {
 	private int engScore;
 	private int mathScore;
 	private String creationDate;
-	public Student() {
-		
-	}
 	public String getStdNo() {
 		return stdNo;
 	}

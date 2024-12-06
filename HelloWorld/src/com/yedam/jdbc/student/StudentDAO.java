@@ -1,7 +1,5 @@
 package com.yedam.jdbc.student;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,6 +8,34 @@ import java.util.ArrayList;
  * 입력, 수정, 삭제, 조회(한개, 전부)
  */
 public class StudentDAO extends DAO {
+	// 로그인.
+	public String login(String id, String password) {
+		getConn();
+		String sql = "select *"
+				+ "   from tbl_member"
+				+ "   where member_id = ?"
+				+ "   and password = ?";
+		
+		try {
+			psmt = conn.prepareStatement(sql);	// 쿼리 실행. 결과 반환.
+			psmt.setString(1, id);
+			psmt.setString(2, password);
+			
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				return rs.getString("member_name");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disconnect();	// 연결해제.			
+		}
+		
+		return null;
+	}
+	
 	// 등록.
 	public boolean insertStudent(Student std) {
 		getConn();
@@ -103,7 +129,6 @@ public class StudentDAO extends DAO {
 			// 반복 ArrayList에 담는 작업.
 			while (rs.next()) {
 				Student std = new Student();
-				
 				std.setStdNo(rs.getString("std_no"));	// 인스턴스 생성.
 				std.setStdName(rs.getString("std_name"));
 				std.setStdPhone(rs.getString("std_phone"));
@@ -123,16 +148,33 @@ public class StudentDAO extends DAO {
 	}
 	
 	// 학생목록.
-	public ArrayList<String> studentList(String condition) {
+	public ArrayList<String> studentList(Search search) {
 		getConn();
 		ArrayList<String> stdNoList = new ArrayList<String>();
 		
-		String sql = "select * from tbl_student";
-		if (condition != "")
-			sql = sql + " where " + condition;
+		String sql = "select std_no,"
+				+ "   std_name,"
+				+ "   std_phone,"
+				+ "   eng_score,"
+				+ "   math_score,"
+				+ "   to_char(creation_date, 'yyy-mm-dd hh24:mi:ss')"
+				+ "	  from tbl_student"
+				+ "	  where std_name like '%'||?||'%' "
+				+ "   and std_phone like '%'||?||'%' "
+				+ "	  and eng_score >= ?";
+		if (search.getOrderBy().equals("std_no")) {
+			sql += " order by std_no";
+		}
+		else if (search.getOrderBy().equals("std_name")) {
+			sql += " order by std_name";
+		}
 		
 		try {
 			psmt = conn.prepareStatement(sql);	// 쿼리 실행. 결과 반환.
+			psmt.setString(1, search.getName());
+			psmt.setString(2, search.getPhone());
+			psmt.setInt(3, search.getEngScore());
+			
 			rs = psmt.executeQuery();
 			// 반복 ArrayList에 담는 작업.
 			while (rs.next()) {
