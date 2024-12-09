@@ -134,7 +134,7 @@ public class StudentDAO extends DAO {
 				std.setStdPhone(rs.getString("std_phone"));
 				std.setEngScore(rs.getInt("eng_score"));
 				std.setMathScore(rs.getInt("math_score"));
-				std.setCreationDate(rs.getString("creation_date"));
+				std.setCreationDate(rs.getDate("creation_date"));
 				return std;
 			}
 		}
@@ -157,7 +157,8 @@ public class StudentDAO extends DAO {
 				+ "   std_phone,"
 				+ "   eng_score,"
 				+ "   math_score,"
-				+ "   to_char(creation_date, 'yyy-mm-dd hh24:mi:ss')"
+//				+ "   to_char(creation_date, 'yyy-mm-dd hh24:mi:ss')"
+				+ "   creation_date"
 				+ "	  from tbl_student"
 				+ "	  where std_name like '%'||?||'%' "
 				+ "   and std_phone like '%'||?||'%' "
