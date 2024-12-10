@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.yedam.common.Control;
 import com.yedam.control.BoardControl;
+import com.yedam.control.BoardFormControl;
 import com.yedam.control.BoardListControl;
 
 /*
@@ -24,8 +25,10 @@ public class FrontControl extends HttpServlet {
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		map.put("/boardList.do", new BoardListControl());
-		map.put("/board.do", new BoardControl());
+		map.put("/boardList.do", new BoardListControl());	// 목록보기
+		map.put("/board.do", new BoardControl());	// 상세보기
+		map.put("/boardForm.do", new BoardFormControl());	// 게시물 등록
+//		map.put("/board.do", new BoardControl());	// 
 	}
 	
 	@Override
