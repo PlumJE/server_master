@@ -8,6 +8,37 @@ import com.yedam.common.DAO;
 import com.yedam.vo.BoardVO;
 
 public class BoardDAO extends DAO {
+	// 목록.
+	public List<BoardVO> boardList() {
+		getConn();
+		String sql = "select * from tbl_board order by board_no";
+		List<BoardVO> result = new ArrayList<>();	// 반환값
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();	// 조회
+			
+			while (rs.next()) {
+				BoardVO brd = new BoardVO();
+				brd.setBoardNo(rs.getInt("board_no"));
+				brd.setTitle(rs.getString("title"));
+				brd.setContent(rs.getString("content"));
+				brd.setWriter(rs.getString("writer"));
+				brd.setViewCnt(rs.getInt("view_cnt"));
+				brd.setCreationDate(rs.getString("creation_date"));
+				brd.setUpdateDate(rs.getString("update_date"));
+				
+				result.add(brd);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		
+		return result;
+	}
 	// 상세조회.
 	public BoardVO selectBoard(int boardNo) {
 		getConn();
@@ -72,26 +103,23 @@ public class BoardDAO extends DAO {
 		}
 		return false;
 	}
-	// 목록.
-	public List<BoardVO> boardList() {
+	// 수정.
+	public boolean updateBoard(BoardVO board) {
 		getConn();
-		String sql = "select * from tbl_board order by board_no";
-		List<BoardVO> result = new ArrayList<>();	// 반환값
+		String sql = "update tbl_board"
+				+ "   set title=?,"
+				+ "		content=?"
+				+ "   where board_no=?";
+		
 		try {
 			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();	// 조회
+			psmt.setString(1, board.getTitle());
+			psmt.setString(2, board.getContent());
+			psmt.setInt(3, board.getBoardNo());
+			int r = psmt.executeUpdate();
 			
-			while (rs.next()) {
-				BoardVO brd = new BoardVO();
-				brd.setBoardNo(rs.getInt("board_no"));
-				brd.setTitle(rs.getString("title"));
-				brd.setContent(rs.getString("content"));
-				brd.setWriter(rs.getString("writer"));
-				brd.setViewCnt(rs.getInt("view_cnt"));
-				brd.setCreationDate(rs.getString("creation_date"));
-				brd.setUpdateDate(rs.getString("update_date"));
-				
-				result.add(brd);
+			if (r > 0) {
+				return true;
 			}
 		}
 		catch (SQLException e) {
@@ -100,7 +128,6 @@ public class BoardDAO extends DAO {
 		finally {
 			disConnect();
 		}
-		
-		return result;
+		return false;
 	}
 }

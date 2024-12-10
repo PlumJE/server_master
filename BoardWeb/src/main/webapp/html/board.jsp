@@ -20,10 +20,13 @@
 				<td><%=board.getCreationDate()%></td>
 			</tr>
 			<tr>
-				<th colspan="4">내용</th>
+				<td colspan="4"><%=board.getContent()%></td>
 			</tr>
 			<tr>
-				<td colspan="4"><%=board.getContent()%></td>
+				<td colspan="4" align="center">
+					<%String link = "modifyForm.do?board_no=" + board.getBoardNo();%>
+					<a href=<%=link%>><input type="submit" value="게시글수정"></a>
+				</td>
 			</tr>
 		</tbody>
 	</table>

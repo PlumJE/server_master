@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
-	<h3>게시글 등록화면(boardFrom.jsp)</h3>
+	<h3>게시글 등록화면(boardForm.jsp)</h3>
 	<form action="board.do" method="post">
 		<table class="table">
 			<tr>

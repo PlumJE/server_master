@@ -13,6 +13,8 @@ import com.yedam.common.Control;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardFormControl;
 import com.yedam.control.BoardListControl;
+import com.yedam.control.ModifyBoardControl;
+import com.yedam.control.ModifyFormControl;
 
 /*
  * url pattern에서 *.do => FrontControl을 반환
@@ -28,7 +30,8 @@ public class FrontControl extends HttpServlet {
 		map.put("/boardList.do", new BoardListControl());	// 목록보기
 		map.put("/board.do", new BoardControl());	// 상세보기
 		map.put("/boardForm.do", new BoardFormControl());	// 게시물 등록
-//		map.put("/board.do", new BoardControl());	// 
+		map.put("/modifyForm.do", new ModifyFormControl());	//
+		map.put("/modifyBoard.do", new ModifyBoardControl());	//
 	}
 	
 	@Override
