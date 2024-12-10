@@ -13,6 +13,9 @@ import com.yedam.common.Control;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardListControl;
 
+/*
+ * url pattern에서 *.do => FrontControl을 반환
+ */
 public class FrontControl extends HttpServlet {
 	Map<String, Control> map;
 	public FrontControl() {
@@ -35,6 +38,6 @@ public class FrontControl extends HttpServlet {
 		
 		// 요청url === 실행할 컨트롤
 		Control control = map.get(path);
-		control.exec();
+		control.exec(request, response);
 	}
 }

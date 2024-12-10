@@ -17,7 +17,7 @@
 			<%for (BoardVO bvo : list) {%>
 			<tr>
 				<%
-				String link = "board.action?board_no=";
+				String link = "board.do?board_no=";
 				link += bvo.getBoardNo();
 				%>
 				<td align="center"><a href=<%=link%>><%=bvo.getBoardNo()%></a></td>

@@ -3,7 +3,6 @@
 	<display-name>BoardWeb</display-name>
   
 	<!-- servlet과 url 매칭 -->
-	
 	<!-- .do -> FrontControl을 실행등록 : url, 실행서블릿 관리. -->
 	<servlet>
 		<servlet-name>front</servlet-name>
@@ -16,7 +15,7 @@
 	
 	<!-- 제일 먼저 실행되는 페이지들(tomcat) -->
 	<welcome-file-list>
-		<welcome-file>boardList.action</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
   
 </web-app>
