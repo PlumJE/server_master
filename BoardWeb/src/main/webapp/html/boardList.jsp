@@ -5,9 +5,25 @@
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
 	<h3>글목록(boardList.jsp)</h3>
-	<%
-	List<BoardVO> list = (List<BoardVO>) request.getAttribute("boardList");
-	%>
+	<%List<BoardVO> list = (List<BoardVO>) request.getAttribute("boardList");%>
+	<form action="boardList.do">
+		<div class="row">
+			<div class="col-sm-4">
+				<select name="searchCondition" class="form-control">
+					<option value="">선택하세요</option>
+					<option value="T">제목</option>
+					<option value="W">작성자</option>
+					<option value="TW">제목 & 작성자</option>
+				</select>
+			</div>
+			<div class="col-sm-6">
+				<input type="text" name="keyword" class="form-control">
+			</div>
+			<div class="col">
+				<input type="submit" name="검색" class="form-control">
+			</div>
+		</div>
+	</form>
 	<table class="table">
 		<thead>
 			<tr>

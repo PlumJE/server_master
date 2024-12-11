@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
+<%String logId = (String) session.getAttribute("logId");%>
 	<h3>게시글 등록화면(boardForm.jsp)</h3>
 	<form action="board.do" method="post">
 		<table class="table">
@@ -14,7 +15,7 @@
 			</tr>
 			<tr>
 				<th>작성자</th>
-				<td><input type="text" name="writer"></td>
+				<td><input type="text" name="writer" value=<%=logId%> readonly></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">

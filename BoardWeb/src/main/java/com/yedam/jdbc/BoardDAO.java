@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.common.SearchDTO;
 import com.yedam.vo.BoardVO;
 
 public class BoardDAO extends DAO {
@@ -29,22 +30,36 @@ public class BoardDAO extends DAO {
 		return 0;
 	}
 	// 목록.
-	public List<BoardVO> boardList(int page) {
+	public List<BoardVO> boardList(SearchDTO search) {
 		getConn();
 		String sql = "select b.* "
 				+ "   from (select rownum as rn, a.* "
 				+ "     from (select * "
 				+ "       from tbl_board "
+				+ "		  where title = '%'||?||'%'"
+				+ "			and writer = '%'||?||'%'"
 				+ "       order by board_no)"
 				+ "     a)"
 				+ "   b"
 				+ "   where b.rn > (? - 1) * 10"
 				+ "     and b.rn <= ? * 10";
+		
+		String title = "%", writer = "%";
+		if (search.getSearchCondition() != null && search.getKeyword() != null) {
+			if (search.getSearchCondition().contains("T")) {
+				title = search.getKeyword();
+			}
+			if (search.getSearchCondition().contains("W")) {
+				writer = search.getKeyword();
+			}
+		}
 		List<BoardVO> result = new ArrayList<>();	// 반환값
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, page);
-			psmt.setInt(2, page);
+			psmt.setString(1, title);
+			psmt.setString(2, writer);
+			psmt.setInt(3, search.getPage());
+			psmt.setInt(4, search.getPage());
 			rs = psmt.executeQuery();	// 조회
 			
 			while (rs.next()) {

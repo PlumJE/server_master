@@ -3,7 +3,8 @@
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
 	<h3>글상세화면(board.jsp)</h3>
-	<%BoardVO board = (BoardVO) request.getAttribute("board");%>
+	<%BoardVO board = (BoardVO) request.getAttribute("board");
+	String logId = (String) session.getAttribute("logId");%>
 	<form action="modifyForm.do">
 		<input type="hidden" name="board_no" value="<%=board.getBoardNo()%>">	
 		<table class="table">
@@ -23,9 +24,11 @@
 					<td colspan="4"><%=board.getContent()%></td>
 				</tr>
 				<tr>
-					<td colspan="4" align="center">
-						<input type="submit" class="btn btn-warning" value="게시글수정">
-					</td>
+					<%if (board.getWriter().equals(logId)) {%>
+						<td colspan="4" align="center">
+							<input type="submit" class="btn btn-warning" value="게시글수정">
+						</td>
+					<%}%>
 				</tr>
 			</tbody>
 		</table>

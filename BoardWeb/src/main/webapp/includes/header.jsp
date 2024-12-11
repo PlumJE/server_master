@@ -20,13 +20,13 @@
             <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="boardList.do">게시글 목록</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="boardForm.do">게시글 작성</a>
                 <% String logId = (String) session.getAttribute("logId");
                 if (logId == null) {%>
                 	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="loginForm.do">로그인</a>
                 <%}
                 else {%>
-                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="logout.do">로그아웃</a>
+                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="boardForm.do">게시글 작성</a>
+                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="logout.do">로그아웃 (<%=logId%>)</a>
                 <%}%>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
