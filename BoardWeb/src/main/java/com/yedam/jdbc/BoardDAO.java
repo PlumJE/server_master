@@ -8,7 +8,6 @@ import com.yedam.common.DAO;
 import com.yedam.vo.BoardVO;
 
 public class BoardDAO extends DAO {
-	
 	public int selectCount() {
 		getConn();
 		String sql = "select count(1)"

@@ -2,7 +2,7 @@
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
 	<h3>로그인화면(loginForm.jsp)</h3>
-	<form action="">
+	<form action="login.do" method="POST">
 		<table class="table">
 			<tr>
 				<th>아이디</th>
