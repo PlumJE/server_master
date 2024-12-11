@@ -7,7 +7,7 @@
 	<form action="modifyBoard.do?board_no=<%=bvo.getBoardNo()%>" method="post">
 		<table class="table">
 			<tr>
-				<th>글번호</th><td name=><%=bvo.getBoardNo()%></td>
+				<th>글번호</th><td><%=bvo.getBoardNo()%></td>
 				<th>작성자</th><td><%=bvo.getWriter()%></td>
 			</tr>
 			<tr>

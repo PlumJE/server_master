@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	import="java.util.List"
-	import="com.yedam.vo.BoardVO"%>
+	import="com.yedam.vo.BoardVO"
+	import="com.yedam.common.PageDTO"%>
 
 <jsp:include page="../includes/header.jsp"></jsp:include>
 	<h3>글목록(boardList.jsp)</h3>
@@ -25,4 +26,44 @@
 			<%}%>
 		</tbody>
 	</table>
+	<!-- paging -->
+	<%PageDTO paging = (PageDTO) request.getAttribute("paging");%>
+	<p><%=paging%></p>
+	<nav aria-label="...">
+		<ul class="pagination">
+			<%if (paging.isPrev()) {%>
+			<li class="page-item">
+				<a class="page-link" href="boardList.do?page=<%=paging.getStartPage()-1%>">Previous</a>
+			</li>
+			<%}
+			else {%>
+			<li class="page-item disabled">
+				<span class="page-link">Previous</span>
+			</li>
+			<%}
+			
+			for (int p = paging.getStartPage(); p <= paging.getEndPage(); p++) {
+				if (paging.getCurrentPage() == p) {%>
+				<li class="page-item active" aria-current="page">
+					<span class="page-link"><%=p%></span>
+				</li>
+			<%	}
+				else {%>
+				<li class="page-item"><a class="page-link" href="boardList.do?page=<%=p%>"><%=p%></a></li>
+			<%	}
+			}
+			
+			if (paging.isNext()) {%>
+			<li class="page-item">
+				<a class="page-link" href="boardList.do?page=<%=paging.getEndPage()+1%>">Next</a>
+			</li>
+			<%}
+			else {%>
+			<li class="page-item disabled">
+				<span class="page-link">Next</span>
+			</li>
+			<%}%>
+		</ul>
+	</nav>
+	<!-- paging -->
 <jsp:include page="../includes/footer.jsp"></jsp:include>

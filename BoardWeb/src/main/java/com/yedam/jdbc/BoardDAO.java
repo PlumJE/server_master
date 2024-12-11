@@ -8,13 +8,44 @@ import com.yedam.common.DAO;
 import com.yedam.vo.BoardVO;
 
 public class BoardDAO extends DAO {
-	// 목록.
-	public List<BoardVO> boardList() {
+	
+	public int selectCount() {
 		getConn();
-		String sql = "select * from tbl_board order by board_no";
+		String sql = "select count(1)"
+				+ "   from tbl_board";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();	// 조회
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		return 0;
+	}
+	// 목록.
+	public List<BoardVO> boardList(int page) {
+		getConn();
+		String sql = "select b.* "
+				+ "   from (select rownum as rn, a.* "
+				+ "     from (select * "
+				+ "       from tbl_board "
+				+ "       order by board_no)"
+				+ "     a)"
+				+ "   b"
+				+ "   where b.rn > (? - 1) * 10"
+				+ "     and b.rn <= ? * 10";
 		List<BoardVO> result = new ArrayList<>();	// 반환값
 		try {
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, page);
+			psmt.setInt(2, page);
 			rs = psmt.executeQuery();	// 조회
 			
 			while (rs.next()) {
@@ -107,8 +138,7 @@ public class BoardDAO extends DAO {
 	public boolean updateBoard(BoardVO board) {
 		getConn();
 		String sql = "update tbl_board"
-				+ "   set title=?,"
-				+ "		content=?"
+				+ "   set title=?, content=?"
 				+ "   where board_no=?";
 		
 		try {

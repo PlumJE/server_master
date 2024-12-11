@@ -7,6 +7,6 @@
 	<title>Insert title here</title>
 </head>
 <body>
-	<a href="boardList.do">시작</a>
+	<jsp:forward page="boardList.do">
 </body>
 </html>

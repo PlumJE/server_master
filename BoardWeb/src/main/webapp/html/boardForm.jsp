@@ -18,7 +18,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<input type="submit" value="게시글등록">
+					<input type="submit" class="btn btn-warning" value="게시글등록">
 				</td>
 			</tr>
 		</table>
