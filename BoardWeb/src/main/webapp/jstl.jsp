@@ -48,11 +48,12 @@
 			<h1>D</h1>
 		</core:otherwise>
 	</core:choose>
+	
+	<!-- 반복문. for(int i=1; i<=10; i++) {...} -->
+	<core:forEach var="i" begin="1" end="10" step="1">
+		<core:if test="${i % 2 == 0}">
+			<p><core:out value="8 * ${i} = ${8 * i}"/></p>
+		</core:if>
+	</core:forEach>
 </body>
 </html>
-
-<if condition="score >= 90">
-</if>
-<if condition="score < 90">
-</if>
-<loop 

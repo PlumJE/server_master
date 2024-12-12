@@ -16,22 +16,19 @@ import com.yedam.vo.BoardVO;
 public class BoardListControl implements Control {
 	@Override
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String page = request.getParameter("page");	// 페이지정보.
-		//page = page == null ? "1" : page;
+		String pg = request.getParameter("page");	// 페이지정보.
 		String sc = request.getParameter("searchCondition");
 		String kw = request.getParameter("keyword");
-		
-		// @AllArgsConstructor
-		// 페이지, 검색조건, 키워드 => 게시글 목록
-		//SearchDTO search = new SearchDTO(Integer.parseInt(page), sc, kw);
 		
 		BoardDAO bdao = new BoardDAO();
 		// 실행영역에서는 실제값이 대입. 다시 물어보면 확인하세요...2024.12.12
 		// argument(매개값), parameter(매개변수)
+		int page = pg == null ? 1 : Integer.parseInt(pg);
+		int max = page * 10 < bdao.selectCount() ? page * 10 : bdao.selectCount();
+		
 		List<BoardVO> boardList = bdao.boardList(sc, kw);
-		int totalCnt = bdao.selectCount();
-		PageDTO pageDTO = new PageDTO(Integer.parseInt(page), totalCnt);
-		System.out.println("totalCnt = " + totalCnt);
+		PageDTO pageDTO = new PageDTO(page, bdao.selectCount());
+		boardList = boardList.subList(page * 10 - 10, max);
 		
 		// 요청 객체에 boardList정보를 담아서 jsp페이지로 전달.
 		request.setAttribute("boardList", boardList);

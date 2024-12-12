@@ -35,6 +35,8 @@ public class BoardControl implements Control {
 			request.getRequestDispatcher("WEB-INF/html/board.jsp").forward(request, response);
 		}
 		else if (request.getMethod().equals("POST")) {
+			request.setCharacterEncoding("utf-8");
+			
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
 			String writer = request.getParameter("writer");
