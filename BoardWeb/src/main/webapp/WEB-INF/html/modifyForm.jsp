@@ -1,10 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	import="com.yedam.vo.BoardVO"%>
 
-<jsp:include page="../includes/header.jsp"></jsp:include>
+<jsp:include page="../../includes/header.jsp"></jsp:include>
 	<h3>게시글 수정화면(modifyForm.jsp)</h3>
-	<%BoardVO bvo = (BoardVO) request.getAttribute("board");%>
-	<form action="modifyBoard.do?board_no=<%=bvo.getBoardNo()%>" method="post">
+	<%BoardVO bvo = (BoardVO) request.getAttribute("board");
+	// 파라미터 추가작업. 2024.12.12
+	String sc = (String) request.getAttribute("searchCondition");
+	String kw = (String) request.getAttribute("keyword");
+	String pg = (String) request.getAttribute("page");
+	String logId = (String) session.getAttribute("logId");%>
+	<form action="modifyBoard.do" method="POST">
+		<input type="hidden" name="board_no" value="<%=bvo.getBoardNo()%>">
+		<!-- 파라미터 추가작업. 2024.12.12 -->
+		<input type="hidden" name="searchCondition" value="<%=sc%>">
+		<input type="hidden" name="keyword" value="<%=kw%>">
+		<input type="hidden" name="page" value="<%=pg%>">
 		<table class="table">
 			<tr>
 				<th>글번호</th><td><%=bvo.getBoardNo()%></td>
@@ -31,4 +41,4 @@
 			</tr>
 		</table>
 	</form>
-<jsp:include page="../includes/footer.jsp"></jsp:include>
+<jsp:include page="../../includes/footer.jsp"></jsp:include>

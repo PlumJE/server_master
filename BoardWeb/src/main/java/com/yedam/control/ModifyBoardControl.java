@@ -2,13 +2,13 @@ package com.yedam.control;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.yedam.common.Control;
 import com.yedam.jdbc.BoardDAO;
 import com.yedam.vo.BoardVO;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class ModifyBoardControl implements Control {
 	@Override
@@ -20,6 +20,10 @@ public class ModifyBoardControl implements Control {
 			int boardNo = Integer.parseInt(request.getParameter("board_no"));
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
+			// 파라미터 추가작업. 2024.12.12
+			String sc = (String) request.getAttribute("searchCondition");
+			String kw = (String) request.getAttribute("keyword");
+			String pg = (String) request.getAttribute("page");
 			
 			BoardVO board = new BoardVO();
 			board.setBoardNo(boardNo);
@@ -28,11 +32,11 @@ public class ModifyBoardControl implements Control {
 			
 			BoardDAO bdao = new BoardDAO();
 			if (bdao.updateBoard(board)) {
-				String addr = "board.do?board_no=" + boardNo;
+				String addr = "board.do?page=" + pg + "&searchCondition=" + sc + "&keyword=" + kw + "&board_no=" + boardNo;
 				response.sendRedirect(addr);
 			}
 			else {
-				request.getRequestDispatcher("html/modifyForm.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/html/modifyForm.jsp").forward(request, response);
 			}
 		}
 	}

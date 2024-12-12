@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<jsp:include page="../includes/header.jsp"></jsp:include>
+<jsp:include page="../../includes/header.jsp"></jsp:include>
 	<h3>로그인화면(loginForm.jsp)</h3>
 	<form action="login.do" method="POST">
 		<table class="table">
@@ -19,4 +19,4 @@
 			</tr>
 		</table>
 	</form>
-<jsp:include page="../includes/footer.jsp"></jsp:include>
+<jsp:include page="../../includes/footer.jsp"></jsp:include>

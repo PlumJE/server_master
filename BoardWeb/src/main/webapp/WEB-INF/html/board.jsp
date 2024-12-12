@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	import="com.yedam.vo.BoardVO"%>
 
-<jsp:include page="../includes/header.jsp"></jsp:include>
+<jsp:include page="../../includes/header.jsp"></jsp:include>
 	<h3>글상세화면(board.jsp)</h3>
 	<%BoardVO board = (BoardVO) request.getAttribute("board");
+	// 파라미터 추가작업. 2024.12.12
+	String sc = (String) request.getAttribute("searchCondition");
+	String kw = (String) request.getAttribute("keyword");
+	String pg = (String) request.getAttribute("page");
 	String logId = (String) session.getAttribute("logId");%>
 	<form action="modifyForm.do">
-		<input type="hidden" name="board_no" value="<%=board.getBoardNo()%>">	
+		<input type="hidden" name="board_no" value="<%=board.getBoardNo()%>">
+		<!-- 파라미터 추가작업. 2024.12.12 -->
+		<input type="hidden" name="searchCondition" value="<%=sc%>">
+		<input type="hidden" name="keyword" value="<%=kw%>">
+		<input type="hidden" name="page" value="<%=pg%>">
 		<table class="table">
 			<thead>
 				<tr>
@@ -24,7 +32,7 @@
 					<td colspan="4"><%=board.getContent()%></td>
 				</tr>
 				<tr>
-					<%if (board.getWriter().equals(logId)) {%>
+					<%if (logId != null && board.getWriter().equals(logId)) {%>
 						<td colspan="4" align="center">
 							<input type="submit" class="btn btn-warning" value="게시글수정">
 						</td>
@@ -33,4 +41,4 @@
 			</tbody>
 		</table>
 	</form>
-<jsp:include page="../includes/footer.jsp"></jsp:include>
+<jsp:include page="../../includes/footer.jsp"></jsp:include>

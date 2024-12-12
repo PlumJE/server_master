@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<jsp:include page="../includes/header.jsp"></jsp:include>
+<jsp:include page="../../includes/header.jsp"></jsp:include>
 <%String logId = (String) session.getAttribute("logId");%>
 	<h3>게시글 등록화면(boardForm.jsp)</h3>
 	<form action="board.do" method="post">
@@ -24,4 +24,4 @@
 			</tr>
 		</table>
 	</form>
-<jsp:include page="../includes/footer.jsp"></jsp:include>
+<jsp:include page="../../includes/footer.jsp"></jsp:include>
