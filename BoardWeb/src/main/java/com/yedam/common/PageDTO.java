@@ -13,14 +13,11 @@ public class PageDTO {
 		int totalPage = (int) Math.ceil(totalCnt / 10.0); // 모든 페이지의 수
 		currentPage = page;
 		
-		leftestPage = 1;
-		rightestPage = 10;
-		while (currentPage < leftestPage || rightestPage < currentPage) {
-			leftestPage += 10;
-			rightestPage += 10;
-		}
+		leftestPage = (currentPage - 1) / 10 * 10 + 1;
+		rightestPage = leftestPage + 9;
 		
 		prev = leftestPage > 1;
 		next = rightestPage < totalPage;
+		rightestPage = next ? rightestPage : totalPage;
 	}
 }

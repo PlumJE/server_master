@@ -17,6 +17,8 @@ public class ModifyBoardControl implements Control {
 		// 정상적으로 수정이 완료되면 목록이동.
 		// 수정에러가 발생하면 수정화면으로 이동.
 		if (request.getMethod().equals("POST")) {
+			request.setCharacterEncoding("utf-8");
+			
 			int boardNo = Integer.parseInt(request.getParameter("board_no"));
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");

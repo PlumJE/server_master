@@ -2,26 +2,23 @@
 	import="java.util.List"
 	import="com.yedam.vo.BoardVO"
 	import="com.yedam.common.PageDTO"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:include page="../../includes/header.jsp"></jsp:include>
+
 	<h3>글목록(boardList.jsp)</h3>
-	<%List<BoardVO> list = (List<BoardVO>) request.getAttribute("boardList");
-	String sc = (String) request.getAttribute("searchCondition");
-	String kw = (String) request.getAttribute("keyword");
-	String query = "searchCondition=" + sc + "&keyword=" + kw + "&page=";
-	PageDTO paging = (PageDTO) request.getAttribute("paging");%>
 	<form action="boardList.do">
 		<div class="row">
 			<div class="col-sm-4">
 				<select name="searchCondition" class="form-control">
 					<option value="">선택하세요</option>
-					<option value="T" <%=sc!=null&&sc.equals("T")?"selected":""%>>제목</option>
-					<option value="W" <%=sc!=null&&sc.equals("W")?"selected":""%>>작성자</option>
-					<option value="TW" <%=sc!=null&&sc.equals("TW")?"selected":""%>>제목 & 작성자</option>
+					<option value="T" ${!empty searchCondition && searchCondition.equals('T') ? 'selected' : ''}>제목</option>
+					<option value="W" ${!empty searchCondition && searchCondition.equals('W') ? 'selected' : ''}>작성자</option>
+					<option value="TW" ${!empty searchCondition && searchCondition.equals('TW') ? 'selected' : ''}>제목 & 작성자</option>
 				</select>
 			</div>
 			<div class="col-sm-6">
-				<input type="text" name="keyword" class="form-control" value=<%=kw!=null?kw:""%>>
+				<input type="text" name="keyword" class="form-control" value=${!empty keyword ? keyword : ""}>
 			</div>
 			<div class="col">
 				<input type="submit" name="검색" class="form-control">
@@ -35,56 +32,63 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%for (BoardVO bvo : list) {%>
-			<tr>
-				<%String link = "board.do?" + query + paging.getCurrentPage() + "&board_no=" + bvo.getBoardNo();%>
-				<td align="center">
-					<a href=<%=link%>><%=bvo.getBoardNo()%></a>
-				</td>
-				<td><%=bvo.getTitle()%></td>
-				<td><%=bvo.getWriter()%></td>
-				<td><%=bvo.getCreationDate()%></td>
-			</tr>
-			<%}%>
+			<c:forEach var="bvo" items="${boardList}">
+				<tr>
+					<td align="center">
+						<a href="board.do?board_no=${bvo.boardNo}&page=${paging.currentPage}&searchCondition=${!empty searchCondition ? searchCondition : ''}&keyword=${!empty keyword ? keyword : ''}">
+							${bvo.boardNo}
+						</a>
+					</td>
+					<td><c:out value="${bvo.title}"/></td>
+					<td><c:out value="${bvo.writer}"/></td>
+					<td>${bvo.creationDate}</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 	<!-- paging -->
-	<p><%=paging%></p>
 	<nav aria-label="...">
 		<ul class="pagination">
-			<%if (paging.isPrev()) {%>
-			<li class="page-item">
-				<a class="page-link" href="boardList.do?<%=query + (paging.getLeftestPage() - 1)%>">Previous</a>
-			</li>
-			<%}
-			else {%>
-			<li class="page-item disabled">
-				<span class="page-link">Previous</span>
-			</li>
-			<%}
+			<c:choose>
+				<c:when test="${paging.prev}">
+					<li class="page-item">
+						<a class="page-link" href="boardList.do?page=${paging.leftestPage - 1}&searchCondition=${!empty searchCondition ? searchCondition : ''}&keyword=${!empty keyword ? keyword : ''}">Previous</a>
+					</li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item disabled">
+						<span class="page-link">Previous</span>
+					</li>
+				</c:otherwise>
+			</c:choose>
 			
-			for (int p = paging.getLeftestPage(); p <= paging.getRightestPage(); p++) {
-				if (paging.getCurrentPage() == p) {%>
-				<li class="page-item active" aria-current="page">
-					<span class="page-link"><%=p%></span>
-				</li>
-			<%	}
-				else {%>
-				<li class="page-item"><a class="page-link" href="boardList.do?<%=query + p%>"><%=p%></a></li>
-			<%	}
-			}
+			<c:forEach var="p" begin="${paging.leftestPage}" end="${paging.rightestPage}">
+				<c:choose>
+					<c:when test="${paging.currentPage == p}">
+						<li class="page-item active" aria-current="page">
+							<span class="page-link">${p}</span>
+						</li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link" href="boardList.do?page=${p}&searchCondition=${!empty searchCondition ? searchCondition : ''}&keyword=${!empty keyword ? keyword : ''}">${p}</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
 			
-			if (paging.isNext()) {%>
-			<li class="page-item">
-				<a class="page-link" href="boardList.do?<%=query + (paging.getRightestPage() + 1)%>">Next</a>
-			</li>
-			<%}
-			else {%>
-			<li class="page-item disabled">
-				<span class="page-link">Next</span>
-			</li>
-			<%}%>
+			<c:choose>
+				<c:when test="${paging.next}">
+					<li class="page-item">
+						<a class="page-link" href="boardList.do?page=${paging.rightestPage + 1}&searchCondition=${!empty searchCondition ? searchCondition : ''}&keyword=${!empty keyword ? keyword : ''}">Next</a>
+					</li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item disabled">
+						<span class="page-link">Next</span>
+					</li>
+				</c:otherwise>
+			</c:choose>
 		</ul>
 	</nav>
 	<!-- paging -->
+
 <jsp:include page="../../includes/footer.jsp"></jsp:include>
