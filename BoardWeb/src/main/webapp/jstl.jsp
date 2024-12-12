@@ -50,9 +50,3 @@
 	</core:choose>
 </body>
 </html>
-
-<if condition="score >= 90">
-</if>
-<if condition="score < 90">
-</if>
-<loop 
