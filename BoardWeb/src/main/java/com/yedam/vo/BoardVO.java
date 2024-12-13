@@ -19,4 +19,5 @@ public class BoardVO {
 	private int viewCnt;
 	private String creationDate;
 	private String updateDate;
+	private String img;	// 이미지의 파일(경로)명.
 }

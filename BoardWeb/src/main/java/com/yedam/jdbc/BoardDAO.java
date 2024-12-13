@@ -57,9 +57,7 @@ public class BoardDAO extends DAO {
 				BoardVO brd = new BoardVO();
 				brd.setBoardNo(rs.getInt("board_no"));
 				brd.setTitle(rs.getString("title"));
-				brd.setContent(rs.getString("content"));
 				brd.setWriter(rs.getString("writer"));
-				brd.setViewCnt(rs.getInt("view_cnt"));
 				brd.setCreationDate(rs.getString("creation_date"));
 				brd.setUpdateDate(rs.getString("update_date"));
 				
@@ -96,6 +94,7 @@ public class BoardDAO extends DAO {
 				brd.setViewCnt(rs.getInt("view_cnt"));
 				brd.setCreationDate(rs.getString("creation_date"));
 				brd.setUpdateDate(rs.getString("update_date"));
+				brd.setImg(rs.getString("img"));
 				
 				return brd;
 			}
@@ -114,8 +113,10 @@ public class BoardDAO extends DAO {
 		String sql = "insert into tbl_board(board_no,"
 				+ "		title,"
 				+ "		content,"
-				+ "		writer)"
+				+ "		writer,"
+				+ "		img)"
 				+ "   values(board_seq.nextval,"
+				+ "		?,"
 				+ "		?,"
 				+ "		?,"
 				+ "		?)";
@@ -125,6 +126,7 @@ public class BoardDAO extends DAO {
 			psmt.setString(1, board.getTitle());
 			psmt.setString(2, board.getContent());
 			psmt.setString(3, board.getWriter());
+			psmt.setString(4, board.getImg());
 			int r = psmt.executeUpdate();
 			
 			if (r > 0) {

@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.yedam.common.Control;
 import com.yedam.jdbc.BoardDAO;
 import com.yedam.vo.BoardVO;
@@ -35,16 +37,29 @@ public class BoardControl implements Control {
 			request.getRequestDispatcher("WEB-INF/html/board.jsp").forward(request, response);
 		}
 		else if (request.getMethod().equals("POST")) {
+			String savePath = request.getServletContext().getRealPath("images");
+			int maxSize = 1024 * 1024 * 5;
+			// multipart요청.
+			MultipartRequest mr = new MultipartRequest(
+					request,	// 요청정보
+					savePath,	// 저장경로
+					maxSize,	// 최대사이즈
+					"utf-8",	// 인코딩
+					new DefaultFileRenamePolicy());	// 리네임 정책
+			
+			// POST 요청일 경우에는 한글인코딩 방식을 적용해줘야 함.
 			request.setCharacterEncoding("utf-8");
 			
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			String writer = request.getParameter("writer");
+			String title = mr.getParameter("title");
+			String content = mr.getParameter("content");
+			String writer = mr.getParameter("writer");
+			String img = mr.getFilesystemName("img");	// 리네임 정책에 의해 생성된 파일명.
 			
 			BoardVO board = new BoardVO();
 			board.setTitle(title);
 			board.setContent(content);
 			board.setWriter(writer);
+			board.setImg(img);
 			
 			if (bdao.insertBoard(board)) {
 				response.sendRedirect("boardList.do");
