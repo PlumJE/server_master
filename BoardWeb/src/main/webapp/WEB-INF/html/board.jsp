@@ -52,16 +52,21 @@
 </style>
 <div class="reply">
 	<!-- 댓글 등록 -->
-	<div class="header"></div>
+	<div class="header">
+		댓글내용: <input type="text" class="col-sm-8" id="reply">
+		<button class="col-sm-2 btn btn-primary" id="addBtn">댓글등록</button>
+	</div>
 	<!-- 댓글 목록 -->
 	<div class="content">
 		<ul>
 			<li>
-				<span class="col-sm-2">글번호</span>
-				<span class="col-sm-5">내용</span>
-				<span class="col-sm-2">작성자</span>
+				<!-- span class="col-sm-2">글번호</span -->
+				<span class="col-sm-8">내용</span>
+				<span class="col-sm-1">작성자</span>
 				<span class="col-sm-2"></span>
 			</li>
+		</ul>
+		<ul class="list">
 		</ul>
 	</div>
 	<!-- 댓글 paging -->
@@ -69,6 +74,7 @@
 </div>
 <script>
 	let bno = "${board.boardNo}";
+	let logId = "${logId}";
 </script>
 <script src="js/board.js"></script>
 

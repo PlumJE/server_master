@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yedam.common.Control;
+import com.yedam.control.AddReplyControl;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardFormControl;
 import com.yedam.control.BoardListControl;
@@ -51,6 +52,7 @@ public class FrontControl extends HttpServlet {
 		map.put("/logout.do", new LogoutControl());
 		// 댓글.
 		map.put("/replyList.do", new ReplyListControl());
+		map.put("/addReply.do", new AddReplyControl());
 		map.put("/removeReply.do", new RemoveReplyControl());
 	}
 	
