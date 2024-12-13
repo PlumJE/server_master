@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yedam.common.Control;
+import com.yedam.control.AddReplyControl;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardFormControl;
 import com.yedam.control.BoardListControl;
@@ -19,6 +20,8 @@ import com.yedam.control.LoginFormControl;
 import com.yedam.control.LogoutControl;
 import com.yedam.control.ModifyBoardControl;
 import com.yedam.control.ModifyFormControl;
+import com.yedam.control.RemoveReplyControl;
+import com.yedam.control.ReplyListControl;
 
 /*
  * url pattern에서 *.do => FrontControl을 반환
@@ -47,6 +50,10 @@ public class FrontControl extends HttpServlet {
 		map.put("/login.do", new LoginControl());
 		// 로그아웃.
 		map.put("/logout.do", new LogoutControl());
+		// 댓글.
+		map.put("/replyList.do", new ReplyListControl());
+		map.put("/addReply.do", new AddReplyControl());
+		map.put("/removeReply.do", new RemoveReplyControl());
 	}
 	
 	@Override
