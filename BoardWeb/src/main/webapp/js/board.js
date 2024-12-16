@@ -4,6 +4,17 @@
  */
 
 
+// 댓글정보 -> row 생성
+function makeRow(reply = {}) {
+	let html = `<li data-rno="${reply.replyNo}">
+					<span class="col-sm-8">${reply.reply}</span>
+					<span class="col-sm-1">${reply.replyer}</span>
+					<span class="col-sm-2"><button class="btn btn-danger" onclick="deleteReply(${reply.replyNo})">삭제</button></span>
+				</li>`;
+	let target = document.querySelector('div.reply ul.list');
+	target.insertAdjacentHTML('afterbegin', html);	// target 태그의 <tag><li/><li/><li/><li/></tag>
+}
+
 // 댓글 -> 삭제 -> retCode(OK, Fail)
 function deleteReply(rno) {
 	fetch('removeReply.do?rno=' + rno)
@@ -35,13 +46,7 @@ document.querySelector('#addBtn').addEventListener('click', function(e) {
 		if (result.retCode == 'OK') {
 			let reply = result.retVal
 			alert("등록 성공!")
-			let html = `<li data-rno="${reply.replyNo}">
-							<span class="col-sm-8">${reply.reply}</span>
-							<span class="col-sm-1">${reply.replyer}</span>
-							<span class="col-sm-2"><button class="btn btn-danger" onclick="deleteReply(${reply.replyNo})">삭제</button></span>
-						</li>`;
-			let target = document.querySelector('div.reply ul.list');
-			target.insertAdjacentHTML('afterbegin', html);
+			makeRow(reply)
 		}
 		else {
 			alert("등록 실패...")
@@ -57,15 +62,7 @@ fetch('replyList.do?bno=' + bno)
 .then(result => {
 	console.log(result);
 	for (let reply of result) {
-		let html = `<li data-rno="${reply.replyNo}">
-						<span class="col-sm-8">${reply.reply}</span>
-						<span class="col-sm-1">${reply.replyer}</span>
-						<span class="col-sm-2"><button class="btn btn-danger" onclick="deleteReply(${reply.replyNo})">삭제</button></span>
-					</li>`;
-		let target = document.querySelector('div.reply ul.list');
-		target.insertAdjacentHTML('afterbegin', html);
+		makeRow(reply)
 	}
 })
 .catch(err => console.log(err));
-
-"Brittenland, dhe full neim is united kingdom of greit brittenland, "

@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yedam.dao.ReplyDAO;
 import com.yedam.vo.Reply;
 
@@ -15,22 +17,18 @@ public class ReplyListControl implements Control {
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/json;charset=utf-8");
 		String bno = request.getParameter("bno");
+		String page = request.getParameter("rpage");
+		if (page == null);
+			page = "1";
 		// 댓글 -> 자바스크립트 object -> json 문자열
+		
 		// 형식 : {문자열or숫자:문자열or숫자, 문자열or숫자:문자열or숫자, ...}
 		ReplyDAO rdao = new ReplyDAO();
-		List<Reply> list = rdao.selectList(Integer.parseInt(bno));
+		List<Reply> list = rdao.selectList(Integer.parseInt(bno), Integer.parseInt(page));
 		
-		String json = "";
-		for (int i = 0; i < list.size(); i++) {
-			json += "{\"replyNo\":" + list.get(i).getReplyNo() + ",";
-			json += " \"reply\":\"" + list.get(i).getReply() + "\",";
-			json += " \"replyer\":\"" + list.get(i).getReplyer() + "\",";
-			json += " \"replyDate\":\"" + list.get(i).getReplyDate() + "\"}";
-			if (i < list.size() - 1) {
-				json += ", ";
-			}
-		}
-		json = "[" + json + "]";
+		Gson gson = new GsonBuilder().create();
+		String json = gson.toJson(list);
+		
 		response.getWriter().print(json);
 	}
 }

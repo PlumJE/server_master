@@ -11,18 +11,25 @@ import com.yedam.vo.ReplyVO;
  * 댓글목록, 댓글등록, 댓글삭제
  */
 public class ReplyDAO extends DAO {
-	String query = "select * from tbl_reply where board_no = ?";
+	String query = "select a.*"
+			+ "		from (select /*+ INDEX(r PK_REPLY) */ rownum rn, r.*"
+			+ "			  from tbl_reply r"
+			+ "			  where board_no = ?) a"
+			+ "		where a.rn > (? - 1) * 5"
+			+ "		  and a.rn <= ? * 5";
 	String insertQuery = "insert into tbl_reply (reply_no, reply, replyer, board_no)"
 			+ "			  values(?, ?, ?, ?)";
 	String deleteQuery = "delete from tbl_reply where reply_no = ?";
 	
 	// 댓글 삭제
-	public List<ReplyVO> selectList(int boardNo) {
+	public List<ReplyVO> selectList(int boardNo, int page) {
 		getConn();
 		List<ReplyVO> rlist = new ArrayList<>(); // 반환될 컬렉션
 		try {
 			psmt = conn.prepareStatement(query);
 			psmt.setInt(1, boardNo);
+			psmt.setInt(2, page);
+			psmt.setInt(3, page);
 			
 			// 조회쿼리.
 			rs = psmt.executeQuery();

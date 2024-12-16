@@ -9,7 +9,7 @@ import com.yedam.vo.Board;
 
 public class BoardDAO extends DAO {
 	private String selectSomeSql = "select board_no"
-			+ "						  from tbl_board";
+			+ "						from tbl_board";
 	private String selectOneSql = "select board_no,"
 			+ "						 title,"
 			+ "						 content,"
@@ -18,8 +18,8 @@ public class BoardDAO extends DAO {
 			+ "						 creation_date,"
 			+ "						 update_date,"
 			+ "						 img"
-			+ "						 from tbl_board"
-			+ "						 where board_no = ?";
+			+ "					   from tbl_board"
+			+ "					   where board_no = ?";
 	private String insertSql = "insert into tbl_board(board_no,"
 			+ "					  title,"
 			+ "					  content,"
@@ -44,8 +44,8 @@ public class BoardDAO extends DAO {
 		
 		String sql = selectSomeSql;
 		if (where != null)
-			sql += "where " + where;
-		sql += "order by board_no";
+			sql += " where " + where;
+		sql += " order by board_no";
 		
 		List<Integer> result = new ArrayList<>();	// 반환값
 		try {
@@ -53,14 +53,13 @@ public class BoardDAO extends DAO {
 			rs = psmt.executeQuery();	// 조회
 			
 			while (rs.next()) {
-				
 				result.add(rs.getInt("board_no"));
 			}
 			
 			int length = result.size();
-			int from = page * 10 - 9;
+			int from = page * 10 - 10;
 			int to = page * 10 < length ? page * 10 : length;
-			result = result.subList(from, to + 1);
+			result = result.subList(from, to);
 			result.add(length);
 		}
 		catch (SQLException e) {

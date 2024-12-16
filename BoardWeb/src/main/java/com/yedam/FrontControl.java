@@ -27,9 +27,6 @@ import com.yedam.control.ReplyListControl;
  * url pattern에서 *.do => FrontControl을 반환
  */
 public class FrontControl extends HttpServlet {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	Map<String, Control> map;
 	public FrontControl() {

@@ -14,7 +14,11 @@ import com.yedam.control.AddReplyControl;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardFormControl;
 import com.yedam.control.BoardListControl;
+import com.yedam.control.ChartControl;
+import com.yedam.control.ChartDataControl;
 import com.yedam.control.Control;
+import com.yedam.control.FullCalendarControl;
+import com.yedam.control.GetReplyCountControl;
 import com.yedam.control.LoginControl;
 import com.yedam.control.LogoutControl;
 import com.yedam.control.ModifyFormControl;
@@ -38,13 +42,21 @@ public class FrontControl extends HttpServlet {
 		map.put("/boardForm.do", new BoardFormControl());	// 게시물 등록
 		map.put("/modifyForm.do", new ModifyFormControl());	// 게시물 수정
 		
-		map.put("/loginForm.do", new LoginControl());	// 로그인 화면
+		map.put("/login.do", new LoginControl());	// 로그인 화면
 		map.put("/logout.do", new LogoutControl());	// 로그아웃.
 		
 		// 댓글.
-		map.put("/replyList.do", new ReplyListControl());
-		map.put("/addReply.do", new AddReplyControl());
-		map.put("/removeReply.do", new RemoveReplyControl());
+		map.put("/replyList.do", new ReplyListControl());	// 댓글목록
+		map.put("/addReply.do", new AddReplyControl());		// 댓글등록
+		map.put("/removeReply.do", new RemoveReplyControl());	// 댓글삭제
+		map.put("/getCount.do", new GetReplyCountControl());
+		
+		// 구글차트
+		map.put("/chart.do", new ChartControl());
+		map.put("/chartData.do", new ChartDataControl());
+		
+		// 풀캘린더
+		map.put("/full.do", new FullCalendarControl());
 	}
 	
 	@Override

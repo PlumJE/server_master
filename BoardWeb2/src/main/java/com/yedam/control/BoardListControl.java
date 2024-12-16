@@ -24,20 +24,24 @@ public class BoardListControl implements Control {
 		// 실행영역에서는 실제값이 대입. 다시 물어보면 확인하세요...2024.12.12
 		// argument(매개값), parameter(매개변수)
 		String where = null;
-		if (sc.equals("T"))
-			where = "title = " + kw;
-		else if (sc.equals("W"))
-			where = "writer = " + kw;
-		else if (sc.equals("TW"))
-			where = "title = " + kw + " writer = " + kw;
+		if (sc != null) {
+			if (sc.equals("T"))
+				where = "title = " + kw;
+			else if (sc.equals("W"))
+				where = "writer = " + kw;
+			else if (sc.equals("TW"))
+				where = "title = " + kw + " writer = " + kw;
+		}
 		int page = pg == null ? 1 : Integer.parseInt(pg);
 		
 		List<Integer> boardNoList = bdao.selectBoardNoList(where, page);
-		PageDTO pageDTO = new PageDTO(page, boardNoList.get(boardNoList.size() - 1));
+		PageDTO pageDTO = new PageDTO(page, boardNoList.get(10));
+		System.out.println(boardNoList.toString());
 		
 		List<Board> boardList = new ArrayList<>();
-		for (Integer i : boardNoList) {
-			boardList.add(bdao.selectBoard(i));
+		for (int i = 0; i < 10; i++) {
+			Integer boardNo = boardNoList.get(i);
+			boardList.add(bdao.selectBoard(boardNo));
 		}
 		
 		// 요청 객체에 boardList정보를 담아서 jsp페이지로 전달.
