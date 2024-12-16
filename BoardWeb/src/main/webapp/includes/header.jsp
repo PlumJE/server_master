@@ -22,7 +22,7 @@
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="boardList.do">게시글 목록</a>
                 <% String logId = (String) session.getAttribute("logId");
                 if (logId == null) {%>
-                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="loginForm.do">로그인</a>
+                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="login.do">로그인</a>
                 <%}
                 else {%>
                 	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="boardForm.do">게시글 작성</a>

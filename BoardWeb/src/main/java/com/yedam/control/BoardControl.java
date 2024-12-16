@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import com.yedam.common.Control;
-import com.yedam.jdbc.BoardDAO;
-import com.yedam.vo.BoardVO;
+import com.yedam.dao.BoardDAO;
+import com.yedam.vo.Board;
 
 
 public class BoardControl implements Control {
@@ -25,7 +24,7 @@ public class BoardControl implements Control {
 			String page = request.getParameter("page");
 			String sc = request.getParameter("searchCondition");
 			String kw = request.getParameter("keyword");
-			BoardVO board = bdao.selectBoard(boardNo);
+			Board board = bdao.selectBoard(boardNo);
 			
 			// board의 속성에 조회된 결과를 전달
 			request.setAttribute("board", board);
@@ -55,7 +54,7 @@ public class BoardControl implements Control {
 			String writer = mr.getParameter("writer");
 			String img = mr.getFilesystemName("img");	// 리네임 정책에 의해 생성된 파일명.
 			
-			BoardVO board = new BoardVO();
+			Board board = new Board();
 			board.setTitle(title);
 			board.setContent(content);
 			board.setWriter(writer);

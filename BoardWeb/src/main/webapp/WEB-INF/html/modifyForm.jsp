@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-	import="com.yedam.vo.BoardVO"%>
+	import="com.yedam.vo.Board"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:include page="../../includes/header.jsp"></jsp:include>
 
 <h3>게시글 수정화면(modifyForm.jsp)</h3>
 <!-- 파라미터 추가작업. 2024.12.12 -->
-<form action="modifyBoard.do" method="POST">
+<form action="modifyForm.do" method="POST">
 	<input type="hidden" name="board_no" value="${board.boardNo}">
 	<input type="hidden" name="searchCondition" value="${searchCondition}">
 	<input type="hidden" name="keyword" value="${keyword}">

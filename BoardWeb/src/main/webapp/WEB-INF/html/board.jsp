@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-	import="com.yedam.vo.BoardVO"%>
+	import="com.yedam.vo.Board"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:include page="../../includes/header.jsp"></jsp:include>
@@ -60,7 +60,6 @@
 	<div class="content">
 		<ul>
 			<li>
-				<!-- span class="col-sm-2">글번호</span -->
 				<span class="col-sm-8">내용</span>
 				<span class="col-sm-1">작성자</span>
 				<span class="col-sm-2"></span>
@@ -71,6 +70,23 @@
 	</div>
 	<!-- 댓글 paging -->
 	<div class="footer"></div>
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination">
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	    <li class="page-item"><a class="page-link" href="#">1</a></li>
+	    <li class="page-item"><a class="page-link" href="#">2</a></li>
+	    <li class="page-item"><a class="page-link" href="#">3</a></li>
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	  </ul>
+	</nav>
 </div>
 <script>
 	let bno = "${board.boardNo}";

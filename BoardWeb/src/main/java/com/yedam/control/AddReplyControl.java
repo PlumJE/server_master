@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.yedam.common.Control;
-import com.yedam.jdbc.ReplyDAO;
-import com.yedam.vo.ReplyVO;
+import com.yedam.dao.ReplyDAO;
+import com.yedam.vo.Reply;
 
 public class AddReplyControl implements Control {
 	@Override
@@ -22,7 +21,7 @@ public class AddReplyControl implements Control {
 		
 		// parameter(reply, replyer, bno)
 		String bno = request.getParameter("bno");
-		ReplyVO rvo = new ReplyVO();
+		Reply rvo = new Reply();
 		
 		rvo.setReply(request.getParameter("reply"));
 		rvo.setReplyer(request.getParameter("replyer"));
