@@ -21,18 +21,102 @@ public class ReplyDAO extends DAO {
 			+ "		  and a.rn <= ? * 5";
 	// 전체 댓글 건수.
 	private String replyCount = "select count(1) from tbl_reply where board_no = ?";
-	private String insertQuery = "insert into tbl_reply (reply_no, reply, replyer, board_no)"
-			+ "			  values(?, ?, ?, ?)";
-	private String deleteQuery = "delete from tbl_reply where reply_no = ?";
+	private String selectSomeQuery = "select reply_no"
+			+ "						  from tbl_reply"
+			+ "						  order by reply_no";
+	private String selectOneQuery = "select reply_no,"
+			+ "						   reply,"
+			+ "						   replyer,"
+			+ "						   board_no)"
+			+ "						 from tbl_reply"
+			+ "						 where board_no = ?";
+	private String insertQuery = "insert into tbl_reply (reply_no, "
+			+ "						reply, "
+			+ "						replyer, "
+			+ "						board_no)"
+			+ "					  values(?, ?, ?, ?)";
+	private String deleteQuery = "delete from tbl_reply "
+			+ "					  where reply_no = ?";
 	// chart, 게시글별 댓글개수
 	private String chartQuery = "select board_no || '번 글' as boardNo, count(1) as cnt"
 			+ "					 from tbl_reply"
 			+ "					 group by board_no";
+	// 일정 등록
+	public boolean insertEvent(Map<String, String> map) {
+		getConn();
+		String sql = "insert into tbl_events(title,"
+				+ "		start_date,"
+				+ "		end_date)"
+				+ "	  values(?, ?, ?)";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, map.get("title"));
+			psmt.setString(2, map.get("start"));
+			psmt.setString(3, map.get("end"));
+			
+			int r = psmt.executeUpdate();	// 처리된 건수 반환
+			if (r > 0) {
+				return true;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		
+		return false;
+	}
+	// 일정 등록
+	public boolean deleteEvent(Map<String, String> map) {
+		getConn();
+		String sql = "delete from tbl_events"
+				+ "	  where title = ?"
+				+ "		and start_date = ?"
+				+ "		and end_date = ?";
+		
+		String start = map.get("start");
+		if (start.length() > 19)
+			start = start.substring(0, 19);
+		String end = map.get("end");
+		if (end == null || end.equals(""))
+			end = "%";
+		if (end.length() > 19)
+			end = end.substring(0, 19);
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, map.get("title"));
+			psmt.setString(2, start);
+			psmt.setString(3, end);
+			
+			System.out.println("title is " + map.get("title"));
+			System.out.println("start is " + start);
+			System.out.println("end is " + end);
+			
+			int r = psmt.executeUpdate();	// 처리된 건수 반환
+			if (r > 0) {
+				return true;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		
+		return false;
+	}
 	// fullcalendar 데이터
 	public List<Map<String, Object>> calendarData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		getConn();
-		String sql = "select title, start_date as start, end_date as end "
+		String sql = "select title,"
+				+ "		start_date,"
+				+ "		end_date"
 				+ "	  from tbl_events";
 		
 		try {
@@ -42,8 +126,8 @@ public class ReplyDAO extends DAO {
 			while (rs.next()) {
 				Map<String, Object> map = new HashMap<>();
 				map.put("title", rs.getString("title"));
-				map.put("start", rs.getString("start"));
-				map.put("end", rs.getString("end"));
+				map.put("start", rs.getString("start_date"));
+				map.put("end", rs.getString("end_date"));
 				
 				list.add(map);
 			}
@@ -135,6 +219,60 @@ public class ReplyDAO extends DAO {
 			disConnect();
 		}
 		return rlist;
+	}
+	public List<Integer> selectReplyNoList(int rpage) {
+		getConn();
+		List<Integer> result = new ArrayList<>();	// 반환값
+		
+		try {
+			psmt = conn.prepareStatement(selectSomeQuery);
+			rs = psmt.executeQuery();	// 조회
+			
+			while (rs.next()) {
+				result.add(rs.getInt("reply_no"));
+			}
+			
+			int length = result.size();
+			int from = rpage * 5 - 5;
+			int to = rpage * 5 < length ? rpage * 5 : length;
+			result = result.subList(from, to);
+			result.add(length);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		
+		return result;
+	}
+	// 댓글 1개 모든 정보 가져오기
+	public Reply selectReply(int boardNo) {
+		getConn();
+		Reply reply = new Reply();
+		try {
+			psmt = conn.prepareStatement(selectOneQuery);
+			psmt.setInt(1, boardNo);
+			rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				reply.setReplyNo(rs.getInt("reply_no"));
+				reply.setReply(rs.getString("reply"));
+				reply.setReplyer(rs.getString("replyer"));
+				reply.setReplyDate(rs.getDate("reply_date"));
+				reply.setBoardNo(rs.getInt("board_no"));
+				
+				return reply;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			disConnect();
+		}
+		return null;
 	}
 	
 	// 댓글 등록

@@ -35,8 +35,7 @@ public class BoardListControl implements Control {
 		int page = pg == null ? 1 : Integer.parseInt(pg);
 		
 		List<Integer> boardNoList = bdao.selectBoardNoList(where, page);
-		PageDTO pageDTO = new PageDTO(page, boardNoList.get(10));
-		System.out.println(boardNoList.toString());
+		PageDTO pageDTO = new PageDTO(page, boardNoList.get(boardNoList.size() - 1));
 		
 		List<Board> boardList = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
