@@ -7,96 +7,64 @@
 <script src='./dist/index.global.js'></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-		var calendarEl = document.getElementById('calendar');
-		
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			headerToolbar: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'dayGridMonth,timeGridWeek,timeGridDay'
-			},
-			initialDate: '2024-12-01',
-			navLinks: true, // can click day/week names to navigate views
-			selectable: true,
-			selectMirror: true,
-			select: function(arg) {
-				var title = prompt('Event Title:');
-				if (title) {
-					calendar.addEvent({
-						title: title,
-						start: arg.start,
-						end: arg.end,
-						allDay: arg.allDay
-					})
-				}
-				calendar.unselect()
-			},
-			eventClick: function(arg) {
-				if (confirm('Are you sure you want to delete this event?')) {
-					arg.event.remove()
-				}
-			},
-			editable: true,
-			dayMaxEvents: true, // allow "more" link when too many events
-			events: [
-				{
-					title: 'All Day Event',
-					start: '2023-01-01'
+		fetch('fullData.do')
+		.then(result => result.json())
+		.then(result => {
+			var calendarEl = document.getElementById('calendar');
+			
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				headerToolbar: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay'
 				},
-				{
-					title: 'Long Event',
-					start: '2023-01-07',
-					end: '2023-01-10'
+				initialDate: '2024-12-12',
+				navLinks: true, // can click day/week names to navigate views
+				selectable: true,
+				selectMirror: true,
+				select: function(arg) {
+					var title = prompt('Event Title:');
+					if (title) {
+						// Ajax 호출.
+						fetch('addEvent.do?a=' + title + '&b=' + arg.startStr + '&c=' + arg.endStr)
+						.then(result => result.json())
+						.then(result => {
+							// 화면 출력.
+							if (result.retCode == 'OK') {
+								calendar.addEvent({
+									title: title,
+									start: arg.start,
+									end: arg.end,
+									allDay: arg.allDay
+								})
+							}	// end of retCode == 'OK'
+						})
+						.catch(err => console.log(err));
+					}
+					calendar.unselect();
 				},
-				{
-					groupId: 999,
-					title: 'Repeating Event',
-					start: '2023-01-09T18:00:00'
+				eventClick: function(arg) {
+					console.log(arg);
+					var e = arg.event;
+					if (confirm('Are you sure you want to delete this event?')) {
+						fetch('deleteEvent.do?a=' + e.title + '&b=' + e.startStr + '&c=' + e.endStr)
+						.then(result => result.json())
+						.then(result => {
+							if (result.retCode == 'OK') {
+								console.log("DB에서 지우기 성공");
+								arg.event.remove();
+							}
+						})
+					}
 				},
-				{
-				  groupId: 999,
-				  title: 'Repeating Event',
-				  start: '2023-01-16T16:00:00'
-				},
-				{
-				  title: 'Conference',
-				  start: '2023-01-11',
-				  end: '2023-01-13'
-				},
-				{
-				  title: 'Meeting',
-				  start: '2023-01-12T10:30:00',
-				  end: '2023-01-12T12:30:00'
-				},
-				{
-				  title: 'Lunch',
-				  start: '2023-01-12T12:00:00'
-				},
-				{
-				  title: 'Meeting',
-				  start: '2023-01-12T14:30:00'
-				},
-				{
-				  title: 'Happy Hour',
-				  start: '2023-01-12T17:30:00'
-				},
-				{
-				  title: 'Dinner',
-				  start: '2023-01-12T20:00:00'
-				},
-				{
-				  title: 'Birthday Party',
-				  start: '2023-01-13T07:00:00'
-				},
-				{
-				  title: 'Click for Google',
-				  url: 'http://google.com/',
-				  start: '2023-01-28'
-				}
-			]
-		});
-		
-		calendar.render();
+				editable: true,
+				dayMaxEvents: true, // allow "more" link when too many events
+				events: result // [{}, {}, {}, ...]
+			});
+			
+			calendar.render();
+		})
+		.catch(err => console.log(err));
 	});
 </script>
 <style>
@@ -114,8 +82,6 @@
 </style>
 </head>
 <body>
-
 	<div id='calendar'></div>
-
 </body>
 </html>
